@@ -5,15 +5,20 @@ const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
 
-app.use(cors({
-  origin: "https://kiet-display.onrender.com",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-}));
+app.use(
+  cors({
+    origin: [
+      "https://kiet-display.onrender.com",
+      "https://kiet-display-admin.onrender.com",
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGODB_URI,{})
+  .connect(process.env.MONGODB_URI, {})
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(err));
 
