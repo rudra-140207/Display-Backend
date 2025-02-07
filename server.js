@@ -8,6 +8,7 @@ dotenv.config();
 app.use(
   cors({
     origin: [
+      "http://localhost:5173",
       "https://kiet-display.onrender.com",
       "https://kiet-display-admin.onrender.com",
     ],
