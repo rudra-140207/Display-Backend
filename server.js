@@ -75,6 +75,12 @@ app.delete("/api/activities/:id", async (req, res) => {
   res.json({ message: "Activity deleted" });
 });
 
+app.delete("/api/images/:id", async (req, res) => {
+  const { id } = req.params;
+  await Image.findByIdAndDelete(id);
+  res.json({ message: "Image deleted" });
+});
+
 app.post("/api/images", async (req, res) => {
   const { name, imageUrl } = req.body;
   
