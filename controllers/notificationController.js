@@ -4,8 +4,9 @@ const getTestNotification = async (req, res) => {
   const { receiver } = req.params;
 
   try {
-    const latestNotification = await Notification.findOne({ receiver })
-      .sort({ createdAt: -1 }); // newest first
+    const latestNotification = await Notification.findOne({ receiver }).sort({
+      createdAt: -1,
+    }); // newest first
 
     if (!latestNotification) {
       return res.status(200).json({ message: "No notifications found." });
@@ -18,12 +19,10 @@ const getTestNotification = async (req, res) => {
   }
 };
 
-
 const getNotifications = async (req, res) => {
   const { receiver } = req.params;
 
   try {
-    
     const notifications = await Notification.find({
       receiver,
       isRead: false,
@@ -32,7 +31,6 @@ const getNotifications = async (req, res) => {
     if (notifications.length === 0) {
       return res.status(200).json({ message: "No new notifications." });
     }
-
 
     const notificationIds = notifications.map((n) => n._id);
     await Notification.updateMany(
@@ -47,26 +45,43 @@ const getNotifications = async (req, res) => {
   }
 };
 
+
+
 const addNotification = async (req, res) => {
-  const { sender, receiver, message } = req.body;
+  const { sender, receivers, message } = req.body;
+
+  const allGroups = ["1-a", "1-b", "2-a", "2-b", "3-a", "3-b", "4-a", "4-b"];
+  const actualReceivers = receivers.includes("ALL") ? allGroups : receivers;
 
   try {
-    const notification = new Notification({
-      sender,   
-      receiver,  
-      message,  
-    });    
-    await notification.save();
-    return res.status(201).json({ message: "Notification added successfully" });    
+    for (let receiver of actualReceivers) {
+      const existing = await Notification.findOne({ receiver });
+
+      if (existing) {
+        existing.sender = sender;
+        existing.message = message;
+        existing.createdAt = new Date();
+        existing.isRead = false;
+        await existing.save();
+      } else {
+        const newNotification = new Notification({
+          sender,
+          receiver,
+          message,
+        });
+        await newNotification.save();
+      }
+    }
+
+    return res.status(201).json({ message: "Notification(s) processed successfully" });
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Server error" });     
-  }  
-};  
+    console.error("Error in addNotification:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
 
 module.exports = {
   getNotifications,
   addNotification,
-  getTestNotification
-};  
-
+  getTestNotification,
+};
