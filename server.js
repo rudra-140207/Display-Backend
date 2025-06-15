@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const { SerialPort } = require('serialport');
 const uploadRoutes = require("./routes/uploadRoutes");
 const imageRoutes = require("./routes/imageRoutes");
 const activityRoutes = require("./routes/activityRoutes");
@@ -36,27 +35,5 @@ app.use("/api/images", imageRoutes);
 app.use("/api/notification", notificationRoutes); 
 app.use("/api", uploadRoutes);
 
-
-// const arduinoPort = new SerialPort({
-//   path: 'COM5',
-//   baudRate: 9600,
-// });
-
-// app.post('/send-to-arduino', (req, res) => {
-//   const { state } = req.body;
-//   if (!state) {
-//     return res.status(400).send('Missing room or state');
-//   }
-
-//   const command = `${state}\n`;
-//   arduinoPort.write(command, (err) => {
-//     if (err) {
-//       console.error('Error writing to Arduino:', err);
-//       return res.status(500).send('Failed to write to Arduino');
-//     }
-//     console.log('Command sent:', command.trim());
-//     res.send('Command sent');
-//   });
-// });
 
 app.listen(5000, () => console.log("Server running on port 5000"));
