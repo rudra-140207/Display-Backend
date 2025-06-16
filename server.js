@@ -17,6 +17,8 @@ app.use(cors({
     "http://localhost:5174",
     "https://kiet-display.onrender.com",
     "https://kiet-display-admin.onrender.com",
+    "https://enkiet.me",
+    "https://admin.enkiet.me",
   ],
   credentials: true,
   methods: ["GET", "POST", "DELETE"],
