@@ -23,6 +23,18 @@ const NotificationSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  imageTitle: {
+    type: String,
+    default: null,
+  },
+  imageUrl: {
+    type: String,
+    default: null,
+  },
+  hasImage: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

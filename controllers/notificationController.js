@@ -48,7 +48,17 @@ const getNotifications = async (req, res) => {
 
 const addNotification = async (req, res) => {
   try {
-    const { sender, receivers, message, videoTitle, videoUrl, hasVideo } = req.body;
+    const { 
+      sender, 
+      receivers, 
+      message, 
+      videoTitle, 
+      videoUrl, 
+      hasVideo,
+      imageTitle,
+      imageUrl,
+      hasImage
+    } = req.body;
 
     const allGroups = ["1-a", "1-b", "2-a", "2-b", "3-a", "3-b", "4-a", "4-b"];
     const actualReceivers = receivers.includes("ALL") ? allGroups : receivers;
@@ -62,6 +72,9 @@ const addNotification = async (req, res) => {
         existing.videoTitle = hasVideo ? videoTitle : null;
         existing.videoUrl = hasVideo ? videoUrl : null;
         existing.hasVideo = hasVideo;
+        existing.imageTitle = hasImage ? imageTitle : null;
+        existing.imageUrl = hasImage ? imageUrl : null;
+        existing.hasImage = hasImage;
         existing.createdAt = new Date();
         existing.isRead = false;
         await existing.save();
@@ -73,6 +86,9 @@ const addNotification = async (req, res) => {
           videoTitle: hasVideo ? videoTitle : null,
           videoUrl: hasVideo ? videoUrl : null,
           hasVideo,
+          imageTitle: hasImage ? imageTitle : null,
+          imageUrl: hasImage ? imageUrl : null,
+          hasImage,
         });
         await newNotification.save();
       }
