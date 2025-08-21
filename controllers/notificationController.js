@@ -46,20 +46,22 @@ const getNotifications = async (req, res) => {
 };
 
 
-
 const addNotification = async (req, res) => {
-  const { sender, receivers, message } = req.body;
-
-  const allGroups = ["1-a", "1-b", "2-a", "2-b", "3-a", "3-b", "4-a", "4-b"];
-  const actualReceivers = receivers.includes("ALL") ? allGroups : receivers;
-
   try {
+    const { sender, receivers, message, videoTitle, videoUrl, hasVideo } = req.body;
+
+    const allGroups = ["1-a", "1-b", "2-a", "2-b", "3-a", "3-b", "4-a", "4-b"];
+    const actualReceivers = receivers.includes("ALL") ? allGroups : receivers;
+
     for (let receiver of actualReceivers) {
       const existing = await Notification.findOne({ receiver });
 
       if (existing) {
         existing.sender = sender;
         existing.message = message;
+        existing.videoTitle = hasVideo ? videoTitle : null;
+        existing.videoUrl = hasVideo ? videoUrl : null;
+        existing.hasVideo = hasVideo;
         existing.createdAt = new Date();
         existing.isRead = false;
         await existing.save();
@@ -68,12 +70,17 @@ const addNotification = async (req, res) => {
           sender,
           receiver,
           message,
+          videoTitle: hasVideo ? videoTitle : null,
+          videoUrl: hasVideo ? videoUrl : null,
+          hasVideo,
         });
         await newNotification.save();
       }
     }
 
-    return res.status(201).json({ message: "Notification(s) processed successfully" });
+    return res.status(201).json({ 
+      message: "Notification(s) processed successfully"
+    });
   } catch (err) {
     console.error("Error in addNotification:", err);
     return res.status(500).json({ error: "Server error" });
@@ -85,3 +92,4 @@ module.exports = {
   addNotification,
   getTestNotification,
 };
+

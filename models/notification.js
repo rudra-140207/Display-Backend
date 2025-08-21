@@ -11,6 +11,18 @@ const NotificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  videoTitle: {
+    type: String,
+    default: null,
+  },
+  videoUrl: {
+    type: String,
+    default: null,
+  },
+  hasVideo: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
