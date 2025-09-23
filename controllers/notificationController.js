@@ -45,22 +45,29 @@ const getNotifications = async (req, res) => {
   }
 };
 
-
 const addNotification = async (req, res) => {
   try {
-    const { 
-      sender, 
-      receivers, 
-      message, 
-      videoTitle, 
-      videoUrl, 
+    const {
+      sender,
+      receivers,
+      message,
+      videoTitle,
+      videoUrl,
       hasVideo,
       imageTitle,
       imageUrl,
-      hasImage
+      hasImage,
     } = req.body;
 
-    const allGroups = ["046", "047", "048", "116", "117", "118"];
+    const allGroups = [
+      "d-046",
+      "d-047",
+      "d-048",
+      "d-116",
+      "d-117",
+      "d-118",
+      "c-219",
+    ];
     const actualReceivers = receivers.includes("ALL") ? allGroups : receivers;
 
     for (let receiver of actualReceivers) {
@@ -94,8 +101,8 @@ const addNotification = async (req, res) => {
       }
     }
 
-    return res.status(201).json({ 
-      message: "Notification(s) processed successfully"
+    return res.status(201).json({
+      message: "Notification(s) processed successfully",
     });
   } catch (err) {
     console.error("Error in addNotification:", err);
@@ -108,4 +115,3 @@ module.exports = {
   addNotification,
   getTestNotification,
 };
-
