@@ -60,7 +60,7 @@ const addNotification = async (req, res) => {
       hasImage
     } = req.body;
 
-    const allGroups = ["1-a", "1-b", "2-a", "2-b", "3-a", "3-b", "4-a", "4-b"];
+    const allGroups = ["046", "047", "048", "116", "117", "118"];
     const actualReceivers = receivers.includes("ALL") ? allGroups : receivers;
 
     for (let receiver of actualReceivers) {
